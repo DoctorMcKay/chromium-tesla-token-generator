@@ -1,0 +1,22 @@
+{
+	"manifest_version": 2,
+	"name": "Tesla Access Token Generator",
+	"version": "1.0.0",
+	"description": "Enables generating access tokens for tesla.com for use with third-party services",
+	"icons": {
+		"48": "img/icon-48.png"
+	},
+	"permissions": [
+		"webRequest",
+		"webRequestBlocking",
+		"https://auth.tesla.com/"
+	],
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"browser_action": {
+		"default_icon": {
+			"48": "img/icon-48.png"
+		}
+	}
+}

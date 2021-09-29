@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tesla Access Token Generator</title>
+	<style>
+		#tesla-frame {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border: 0;
+		}
+
+		#output {
+			display: none;
+			font-family: Verdana, Arial, sans-serif;
+			font-size: 14px;
+			white-space: nowrap;
+			padding-bottom: 20px;
+		}
+
+		#output b {
+			display: inline-block;
+			width: 150px;
+			text-align: right;
+			padding-right: 5px;
+		}
+
+		#output code {
+			cursor: pointer;
+		}
+
+		#output code:hover {
+			background-color: #eee;
+		}
+
+		#output .confirm-message {
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<iframe id="tesla-frame"></iframe>
+	<div id="output"></div>
+	<script src="js/sha256.js"></script>
+	<script src="js/get_token.js"></script>
+</body>
+</html>
