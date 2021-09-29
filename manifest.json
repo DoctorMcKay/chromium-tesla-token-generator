@@ -4,7 +4,8 @@
 	"version": "1.0.0",
 	"description": "Enables generating access tokens for tesla.com for use with third-party services",
 	"icons": {
-		"48": "img/icon-48.png"
+		"48": "img/48.png",
+		"128": "img/128.png"
 	},
 	"permissions": [
 		"webRequest",
@@ -16,7 +17,8 @@
 	},
 	"browser_action": {
 		"default_icon": {
-			"48": "img/icon-48.png"
+			"48": "img/48.png",
+			"128": "img/128.png"
 		}
 	}
 }
