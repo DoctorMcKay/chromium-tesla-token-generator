@@ -59,35 +59,42 @@ chrome.runtime.onMessage.addListener(function(msg, sender, respond) {
 
 		try {
 			let result = JSON.parse(xhr.responseText);
-			outputDiv.innerHTML = '<p><i>Click to copy a token</i></p>';
-			outputDiv.innerHTML += `<div><b>Access Token:</b> <code data-type="Access">${result.access_token || '(none returned)'}</code></div>`;
-			outputDiv.innerHTML += `<div><b>Refresh Token:</b> <code data-type="Refresh">${result.refresh_token || '(none returned)'}</code></div>`;
-			outputDiv.innerHTML += `<div><b>ID Token:</b> <code data-type="ID">${result.id_token || '(none returned)'}</code></div>`;
-			outputDiv.innerHTML += `<div><b>Valid Time:</b> ${result.expires_in / 60} minutes</div>`;
+			document.getElementById('access-token').textContent = result.access_token || '(none returned)';
+			document.getElementById('refresh-token').textContent = result.refresh_token || '(none returned)';
+			document.getElementById('id-token').textContent = result.id_token || '(none returned)';
+			document.getElementById('access-token-validity').textContent = `${result.expires_in / 60} minutes`;
+			document.getElementById('output-tokens').style.display = 'block';
 		} catch (ex) {
 			outputDiv.textContent = 'There was an error logging in. Invalid JSON was returned.';
 		}
-
-		let codeTags = document.getElementsByTagName('code');
-		for (let i = 0; i < codeTags.length; i++) {
-			codeTags[i].addEventListener('click', function() {
-				if (!this.dataset.type) {
-					return;
-				}
-
-				navigator.clipboard.writeText(this.textContent);
-				let confirmDiv = document.createElement('div');
-				confirmDiv.className = 'confirm-message';
-				confirmDiv.textContent = this.dataset.type + ' token copied!';
-				outputDiv.appendChild(confirmDiv);
-
-				setTimeout(() => {
-					outputDiv.removeChild(confirmDiv);
-				}, 5000);
-			});
-		}
 	};
 });
+
+// Set up click listeners
+document.getElementById('tokens-show-more').addEventListener('click', function(event) {
+	event.preventDefault();
+	this.style.display = 'none';
+	document.getElementById('output-tokens-more').style.display = 'block';
+});
+
+let codeTags = document.getElementsByTagName('code');
+let g_ConfirmMessageClearTimer;
+for (let i = 0; i < codeTags.length; i++) {
+	codeTags[i].addEventListener('click', function() {
+		if (!this.dataset.type) {
+			return;
+		}
+
+		clearTimeout(g_ConfirmMessageClearTimer);
+		navigator.clipboard.writeText(this.textContent);
+		let confirmDiv = document.getElementById('confirm-message');
+		confirmDiv.textContent = this.dataset.type + ' token copied!';
+
+		g_ConfirmMessageClearTimer = setTimeout(() => {
+			confirmDiv.textContent = '';
+		}, 5000);
+	});
+}
 
 function generateCodeVerifier() {
 	// Tesla might use something more sophisticated, but in my experience it's a 112-char alphanumeric string so let's just do that

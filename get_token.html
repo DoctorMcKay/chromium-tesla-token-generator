@@ -38,14 +38,41 @@
 			background-color: #eee;
 		}
 
-		#output .confirm-message {
+		#tokens-show-more {
+			display: block;
 			margin-top: 10px;
+		}
+
+		#output-tokens-more {
+			display: none;
+		}
+
+		#confirm-message {
+			margin-top: 20px;
+		}
+
+		i {
+			display: block;
+			margin: 10px 0;
 		}
 	</style>
 </head>
 <body>
 	<iframe id="tesla-frame"></iframe>
-	<div id="output"></div>
+	<div id="output">
+		<div id="output-tokens">
+			<p><i>Click to copy a token</i></p>
+			<div><b>Refresh Token:</b> <code id="refresh-token" data-type="Refresh">(none returned)</code></div>
+			<a href="#" id="tokens-show-more">Show access and ID tokens</a>
+			<div id="output-tokens-more">
+				<div><i>You probably don't need these. Make sure that the app you're using specifically is asking for one of these tokens and not a refresh token.</i></div>
+				<div><b>Access Token:</b> <code id="access-token" data-type="Access">(none returned)</code></div>
+				<div><b>Valid Time:</b> <span id="access-token-validity"></span></div>
+				<div><b>ID Token:</b> <code id="id-token" data-type="ID">(none returned)</code></div>
+			</div>
+			<div id="confirm-message"></div>
+		</div>
+	</div>
 	<script src="js/sha256.js"></script>
 	<script src="js/get_token.js"></script>
 </body>
