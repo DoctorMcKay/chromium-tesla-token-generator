@@ -12,32 +12,10 @@ chrome.runtime.onMessage.addListener(function(msg, sender, respond) {
 
 	switch (msg.type) {
 		case 'init':
-			// Initialize net request rules for this tab
-
 			g_OurTabIds[sender.tab.id] = {
 				codeVerifier: msg.codeVerifier,
 				codeChallenge: msg.codeChallenge
 			};
-
-			// It really isn't all that important that we block this request, and I'm not even sure that it's necessary
-			// to add this block rule since we're closing the tab before it even makes the request, but let's do this
-			// anyway to be a good citizen.
-			chrome.declarativeNetRequest.updateSessionRules({
-				addRules: [
-					{
-						id: sender.tab.id,
-						condition: {
-							tabIds: [sender.tab.id],
-							urlFilter: '|https://auth.tesla.com/void/callback*',
-							resourceTypes: ['main_frame']
-						},
-						action: {
-							type: 'block'
-						}
-					}
-				]
-			});
-
 			break;
 
 		case 'finalizeAuth':
@@ -69,8 +47,4 @@ chrome.webRequest.onBeforeRequest.addListener(async function(info) {
 	delete g_OurTabIds[tab.id];
 
 	chrome.tabs.remove(tab.id);
-
-	chrome.declarativeNetRequest.updateSessionRules({
-		removeRuleIds: [tab.id]
-	});
 }, {urls: ['https://auth.tesla.com/void/callback*']});

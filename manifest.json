@@ -9,11 +9,10 @@
 	},
 	"permissions": [
 		"tabs",
-		"webRequest",
-		"declarativeNetRequest"
+		"webRequest"
 	],
 	"host_permissions": [
-		"https://auth.tesla.com/void/callback*"
+		"https://auth.tesla.com/*"
 	],
 	"background": {
 		"service_worker": "background.js"
