@@ -1,3 +1,6 @@
+// We need to request the background service worker to set up net request rules for this tab
+chrome.runtime.sendMessage({type: 'init'});
+
 let teslaFrame = document.getElementById('tesla-frame');
 let outputDiv = document.getElementById('output');
 
