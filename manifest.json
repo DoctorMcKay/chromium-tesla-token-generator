@@ -8,6 +8,7 @@
 		"128": "img/128.png"
 	},
 	"permissions": [
+		"tabs",
 		"webRequest",
 		"declarativeNetRequest"
 	],

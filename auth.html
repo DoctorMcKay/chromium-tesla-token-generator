@@ -4,15 +4,22 @@
 	<meta charset="UTF-8">
 	<title>Tesla Access Token Generator</title>
 	<style>
-		#tesla-frame {
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			border: 0;
+		body {
+			background-color: #000;
+			color: #d0d1d2;
+		}
+
+		button {
+			background-color: #393c41;
+			color: #d0d1d2;
+			padding: 10px 30px;
+			border-radius: 10px;
+
+			transition: background-color 500ms;
+		}
+
+		button:hover {
+			background-color: #5c5d61;
 		}
 
 		#output {
@@ -21,6 +28,16 @@
 			font-size: 14px;
 			white-space: nowrap;
 			padding-bottom: 20px;
+		}
+
+		#output.fatal-error-message {
+			position: absolute;
+			top: 40%;
+			left: 0;
+			right: 0;
+
+			text-align: center;
+			font-size: 24px;
 		}
 
 		#output b {
@@ -35,7 +52,11 @@
 		}
 
 		#output code:hover {
-			background-color: #eee;
+			background-color: #393c41;
+		}
+
+		#output-tokens-primary {
+			margin-bottom: 50px;
 		}
 
 		#tokens-show-more {
@@ -58,14 +79,21 @@
 	</style>
 </head>
 <body>
-	<iframe id="tesla-frame"></iframe>
 	<div id="output">
 		<div id="output-tokens">
 			<p><i>Click to copy a token</i></p>
-			<div><b>Refresh Token:</b> <code id="refresh-token" data-type="Refresh">(none returned)</code></div>
-			<a href="#" id="tokens-show-more">Show access and ID tokens</a>
+
+			<div id="output-tokens-primary">
+				<div><b>Refresh Token:</b> <code id="refresh-token" data-type="Refresh">(none returned)</code></div>
+			</div>
+
+			<button type="button" id="tokens-show-more">Show access and ID tokens</button>
+
 			<div id="output-tokens-more">
-				<div><i>You probably don't need these. Make sure that the app you're using specifically is asking for one of these tokens and not a refresh token.</i></div>
+				<div><i>
+					You probably don't need these. Make sure that the app you're using is specifically asking for one of
+					these tokens and not a refresh token.
+				</i></div>
 				<div><b>Access Token:</b> <code id="access-token" data-type="Access">(none returned)</code></div>
 				<div><b>Valid Time:</b> <span id="access-token-validity"></span></div>
 				<div><b>ID Token:</b> <code id="id-token" data-type="ID">(none returned)</code></div>
@@ -73,7 +101,7 @@
 			<div id="confirm-message"></div>
 		</div>
 	</div>
-	<script src="js/sha256.js"></script>
-	<script src="js/get_token.js"></script>
+
+	<script src="js/auth.js"></script>
 </body>
 </html>
