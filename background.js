@@ -35,16 +35,7 @@ chrome.webRequest.onBeforeRequest.addListener(async function(info) {
 	let tabInfo = g_OurTabIds[info.tabId];
 	tabInfo.authUrl = info.url;
 
-	// Edge doesn't like it if we try to redirect to an extension page, even with declarativeNetRequest.
-	// So instead, create a new tab and close the old one.
-	let tab = await chrome.tabs.get(info.tabId);
-	let newTab = await chrome.tabs.create({
-		url: 'auth.html',
-		index: tab.index
-	});
-
-	g_OurTabIds[newTab.id] = g_OurTabIds[tab.id];
-	delete g_OurTabIds[tab.id];
-
-	chrome.tabs.remove(tab.id);
+	// Edge doesn't like it if we try to redirect to an extension page with declarativeNetRequest.
+	// So instead, update its location here
+	await chrome.tabs.update(info.tabId, {url: chrome.runtime.getURL('auth.html')});
 }, {urls: ['https://auth.tesla.com/void/callback*']});
