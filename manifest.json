@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Access Token Generator for Tesla",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "Enables generating access tokens for tesla.com for use with third-party services",
 	"icons": {
 		"48": "img/48.png",
