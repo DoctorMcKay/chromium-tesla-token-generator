@@ -1,39 +1,52 @@
-let g_OurTabIds = {};
-
 chrome.action.onClicked.addListener(async function(tab) {
 	let newTab = await chrome.tabs.create({url: 'setup.html'});
-	g_OurTabIds[newTab.id] = true;
+	await chrome.storage.session.set({[`tab_${newTab.id}`]: true});
 });
 
-chrome.runtime.onMessage.addListener(function(msg, sender, respond) {
-	if (!sender || !sender.tab || !sender.tab.id || !g_OurTabIds[sender.tab.id] || !msg || !msg.type) {
-		return;
+chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+	async function handle() {
+		if (!sender || !sender.tab || !sender.tab.id || !msg || !msg.type) {
+			return;
+		}
+
+		let tabInfoKey = `tab_${sender.tab.id}`;
+		let tabInfo = (await chrome.storage.session.get(tabInfoKey))[tabInfoKey];
+		if (!tabInfo) {
+			return;
+		}
+
+		switch (msg.type) {
+			case 'init':
+				await chrome.storage.session.set({
+					[tabInfoKey]: {
+						codeVerifier: msg.codeVerifier,
+						codeChallenge: msg.codeChallenge
+					}
+				});
+				return;
+
+			case 'finalizeAuth':
+				await chrome.storage.session.remove(tabInfoKey);
+				return tabInfo;
+		}
 	}
 
-	switch (msg.type) {
-		case 'init':
-			g_OurTabIds[sender.tab.id] = {
-				codeVerifier: msg.codeVerifier,
-				codeChallenge: msg.codeChallenge
-			};
-			break;
-
-		case 'finalizeAuth':
-			respond(g_OurTabIds[sender.tab.id]);
-			delete g_OurTabIds[sender.tab.id];
-			break;
-	}
+	// returning true indicates that we're going to asyncronously use sendResponse()
+	handle().then(result => sendResponse(result));
+	return true;
 });
 
 chrome.webRequest.onBeforeRequest.addListener(async function(info) {
-	if (typeof g_OurTabIds[info.tabId] != 'object') {
+	let tabInfoKey = `tab_${info.tabId}`;
+	let tabInfo = (await chrome.storage.session.get(tabInfoKey))[tabInfoKey];
+	if (typeof tabInfo != 'object') {
 		console.log('Ignoring callback because it was not in a tab opened by us');
 		return;
 	}
 
 	// Auth succeeded
-	let tabInfo = g_OurTabIds[info.tabId];
 	tabInfo.authUrl = info.url;
+	await chrome.storage.session.set({[tabInfoKey]: tabInfo});
 
 	// Edge doesn't like it if we try to redirect to an extension page with declarativeNetRequest.
 	// So instead, update its location here

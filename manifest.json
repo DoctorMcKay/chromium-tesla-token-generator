@@ -8,6 +8,7 @@
 		"128": "img/128.png"
 	},
 	"permissions": [
+		"storage",
 		"webRequest"
 	],
 	"host_permissions": [
