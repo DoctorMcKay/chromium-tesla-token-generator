@@ -14,7 +14,7 @@ login request is the only thing that the extension is watching for.
 
 Once you have the extension installed, click the Access Token Generator for Tesla button on your toolbar to get started.
 
-- [Get it from the Chrome Web Store](https://chrome.google.com/webstore/detail/tesla-access-token-genera/kokkedfblmfbngojkeaepekpidghjgag)
+- [Get it from the Chrome Web Store](https://chrome.google.com/webstore/detail/access-token-generator-fo/djpjpanpjaimfjalnpkppkjiedmgpjpe)
 - [Get it from Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tesla-access-token-genera/mjpplpkadjdmedpklcioagjgaflfphbo)
 
 *This extension is not endorsed by or affiliated with Tesla, Inc.*
